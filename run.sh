@@ -28,7 +28,7 @@ while test $# -gt 0; do
   esac
 done
 
-echo "Building..."
+echo "Building ${target}..."
 
 cmake -Bbuild
 cmake --build build --target $target
