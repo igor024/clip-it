@@ -3,7 +3,7 @@ target="ConsoleAppExample"
 
 while test $# -gt 0; do
   case "$1" in
-    -r|--reset-cache)
+    -c|--reset-cache)
     shift
     echo "Removing cached files..."
     if test -f ./CMakeCache.txt; then
@@ -19,7 +19,7 @@ while test $# -gt 0; do
       rm -rf ./CMakeFiles
     fi
     if test -d ./ConsoleAppExample_artefacts; then
-      rm -rf ./ConsoleAppExample_artefacts
+      rm -rf ./${target}_artefacts
     fi
     ;;
     *)
