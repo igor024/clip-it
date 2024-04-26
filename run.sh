@@ -1,5 +1,5 @@
 #!/bin/bash
-target="ConsoleAppExample"
+target="ClipIt"
 
 while test $# -gt 0; do
   case "$1" in
