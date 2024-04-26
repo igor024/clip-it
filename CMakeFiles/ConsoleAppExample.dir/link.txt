@@ -1,1 +1,0 @@
-/usr/bin/c++ CMakeFiles/ConsoleAppExample.dir/Main.cpp.o CMakeFiles/ConsoleAppExample.dir/JUCE/modules/juce_core/juce_core.cpp.o -o ConsoleAppExample_artefacts/ConsoleAppExample  -lrt -ldl -lpthread 
