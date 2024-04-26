@@ -18,7 +18,7 @@ while test $# -gt 0; do
     if test -d ./CMakeFiles; then
       rm -rf ./CMakeFiles
     fi
-    if test -d ./ConsoleAppExample_artefacts; then
+    if test -d ./${target}_artefacts; then
       rm -rf ./${target}_artefacts
     fi
     ;;
