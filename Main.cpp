@@ -26,26 +26,12 @@ int main (int argc, char* argv[])
             cout << "done.\n";
             break;
         }
-        /*if(c == 'R') {    
-            lastRecording = parentDir.getNonexistentChildFile ("JUCE Demo Audio Recording", ".wav");
-
-            recorder.startRecording (lastRecording);
+        if(c == 'R') {    
+            recorder.startRecording();
         }
-        if(c == 'S' {
-            recorder.stop();
-            chooser.launchAsync (  FileBrowserComponent::saveMode
-                | FileBrowserComponent::canSelectFiles
-                | FileBrowserComponent::warnAboutOverwriting,
-                [this] (const FileChooser& c)
-                {
-                    if (FileInputStream inputStream (lastRecording); inputStream.openedOk())
-                    if (const auto outputStream = makeOutputStream (c.getURLResult()))
-                        outputStream->writeFromInputStream (inputStream, -1);
-
-                    recordButton.setButtonText ("Record");
-                    recordingThumbnail.setDisplayFullThumbnail (true);
-                });
-        })*/
+        if(c == 'S') {
+            recorder.stopRecording();
+        }
     }
 
     return 0;

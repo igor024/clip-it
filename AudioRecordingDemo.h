@@ -50,6 +50,7 @@
 #include <JuceHeader.h>
 #include "./DemoUtilities.h"
 
+using namespace std;
 
 //==============================================================================
 /** A simple class that acts as an AudioIODeviceCallback and writes the
@@ -72,6 +73,7 @@ public:
     //==============================================================================
     void startRecording (const File& file)
     {
+        cout << "Start recording!!\n";
         stop();
 
         if (sampleRate > 0)
@@ -98,6 +100,7 @@ public:
                     // And now, swap over our active writer pointer so that the audio callback will start using it..
                     const ScopedLock sl (writerLock);
                     activeWriter = threadedWriter.get();
+                    cout << "done recording!!\n";
                 }
             }
         }
@@ -248,6 +251,52 @@ public:
         
     }
 
+    void startRecording()
+    {
+        cout << "gogogo";
+        if (! RuntimePermissions::isGranted (RuntimePermissions::writeExternalStorage))
+        {
+            SafePointer<AudioRecordingDemo> safeThis (this);
+
+            RuntimePermissions::request (RuntimePermissions::writeExternalStorage,
+                                         [safeThis] (bool granted) mutable
+                                         {
+                                             if (granted)
+                                                 safeThis->startRecording();
+                                         });
+            return;
+        }
+
+        File parentDir = File::getCurrentWorkingDirectory();
+        File recDir = parentDir.getChildFile("recordings");
+
+        lastRecording = recDir.getNonexistentChildFile ("Clip-it recording", ".wav");
+
+        recorder.startRecording (lastRecording);
+
+
+        recordingThumbnail.setDisplayFullThumbnail (false);
+    }
+
+    void stopRecording()
+    {
+        recorder.stop();
+
+        //choose file location doesnt work yet
+
+        /*chooser.launchAsync (  FileBrowserComponent::saveMode
+                             | FileBrowserComponent::canSelectFiles
+                             | FileBrowserComponent::warnAboutOverwriting,
+                             [this] (const FileChooser& c)
+                             {
+                                 if (FileInputStream inputStream (lastRecording); inputStream.openedOk())
+                                    if (const auto outputStream = makeOutputStream (c.getURLResult()))
+                                        outputStream->writeFromInputStream (inputStream, -1);
+
+                                 recordingThumbnail.setDisplayFullThumbnail (true);
+                             });*/
+    }
+
 private:
     // if this PIP is running inside the demo runner, we'll use the shared device manager instead
    #ifndef JUCE_DEMO_RUNNER
@@ -262,51 +311,6 @@ private:
     AudioRecorder recorder { recordingThumbnail.getAudioThumbnail() };
 
     FileChooser chooser { "Output file...", File::getCurrentWorkingDirectory().getChildFile ("recording.wav"), "*.wav" };
-
-    void startRecording()
-    {
-        if (! RuntimePermissions::isGranted (RuntimePermissions::writeExternalStorage))
-        {
-            SafePointer<AudioRecordingDemo> safeThis (this);
-
-            RuntimePermissions::request (RuntimePermissions::writeExternalStorage,
-                                         [safeThis] (bool granted) mutable
-                                         {
-                                             if (granted)
-                                                 safeThis->startRecording();
-                                         });
-            return;
-        }
-
-       #if (JUCE_ANDROID || JUCE_IOS)
-        auto parentDir = File::getSpecialLocation (File::tempDirectory);
-       #else
-        auto parentDir = File::getSpecialLocation (File::userDocumentsDirectory);
-       #endif
-
-        lastRecording = parentDir.getNonexistentChildFile ("JUCE Demo Audio Recording", ".wav");
-
-        recorder.startRecording (lastRecording);
-
-        recordingThumbnail.setDisplayFullThumbnail (false);
-    }
-
-    void stopRecording()
-    {
-        recorder.stop();
-
-        chooser.launchAsync (  FileBrowserComponent::saveMode
-                             | FileBrowserComponent::canSelectFiles
-                             | FileBrowserComponent::warnAboutOverwriting,
-                             [this] (const FileChooser& c)
-                             {
-                                 if (FileInputStream inputStream (lastRecording); inputStream.openedOk())
-                                    if (const auto outputStream = makeOutputStream (c.getURLResult()))
-                                        outputStream->writeFromInputStream (inputStream, -1);
-
-                                 recordingThumbnail.setDisplayFullThumbnail (true);
-                             });
-    }
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (AudioRecordingDemo)
 };
