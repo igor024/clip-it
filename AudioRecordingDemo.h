@@ -129,6 +129,7 @@ public:
     void audioDeviceAboutToStart (AudioIODevice* device) override
     {
         sampleRate = device->getCurrentSampleRate();
+        cout <<"audioDeviceAboutToStart:\nDevice : " << device->getName() << "\nSampleRate : " << device->getCurrentSampleRate() << "\nBufferSize : " << device->getCurrentBufferSizeSamples() + "\n";
     }
 
     void audioDeviceStopped() override
@@ -141,6 +142,7 @@ public:
                                            int numSamples, const AudioIODeviceCallbackContext& context) override
     {
         ignoreUnused (context);
+
 
         const ScopedLock sl (writerLock);
 
@@ -262,6 +264,7 @@ public:
                                          [safeThis] (bool granted) mutable
                                          {
                                              if (granted)
+                                                cout << "GRANTED\n";
                                                  safeThis->startRecording();
                                          });
             return;
