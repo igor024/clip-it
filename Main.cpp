@@ -17,8 +17,29 @@ int main (int argc, char* argv[])
     File lastRecording;
     FileChooser chooser { "Output file...", File::getCurrentWorkingDirectory().getChildFile ("recording.wav"), "*.wav" };
     */
+    AudioDeviceManager audioDeviceManager;
 
-    AudioRecordingDemo recorder;
+   auto& deviceTypes = audioDeviceManager.getAvailableDeviceTypes();
+        
+        for (auto type : deviceTypes)
+        {
+            auto deviceNames (type->getDeviceNames());
+            
+            for (auto device : deviceNames)
+            {
+                cout << "device found:" << device << "\n";
+                if(device == "sof-hda-dsp, ; Direct hardware device without any conversions (3)") {
+                    cout << "have a go!\n";
+                    
+                    auto setup = audioDeviceManager.getAudioDeviceSetup();
+                    setup.inputDeviceName = "sof-hda-dsp, ; Direct hardware device without any conversions (3)";
+                    audioDeviceManager.setAudioDeviceSetup (setup, true);
+                    cout << "Success!\n";
+                }
+            }
+        }
+
+    AudioRecordingDemo recorder {audioDeviceManager};
    
     cout << "Hotkeys:\nAlt+Z: Clip it\nQ: Exit\n";
     while(auto c = getchar()) {

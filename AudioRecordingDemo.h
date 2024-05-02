@@ -221,7 +221,7 @@ private:
 class AudioRecordingDemo final : public Component
 {
 public:
-    AudioRecordingDemo()
+    AudioRecordingDemo(AudioDeviceManager& deviceManager) : audioDeviceManager(deviceManager)
     {
 
         addAndMakeVisible (recordingThumbnail);
@@ -301,14 +301,9 @@ public:
     }
 
 private:
-    // if this PIP is running inside the demo runner, we'll use the shared device manager instead
-   #ifndef JUCE_DEMO_RUNNER
-    AudioDeviceManager audioDeviceManager;
-   #else
-    AudioDeviceManager& audioDeviceManager { getSharedAudioDeviceManager (1, 0) };
-   #endif
 
     File lastRecording;
+    AudioDeviceManager& audioDeviceManager;
 
     RecordingThumbnail recordingThumbnail;
     AudioRecorder recorder { recordingThumbnail.getAudioThumbnail() };
