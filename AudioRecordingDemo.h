@@ -127,7 +127,7 @@ public:
 
     //==============================================================================
     void audioDeviceAboutToStart (AudioIODevice* device) override
-    {
+    {   
         sampleRate = device->getCurrentSampleRate();
         cout <<"audioDeviceAboutToStart:\nDevice : " << device->getName() << "\nSampleRate : " << device->getCurrentSampleRate() << "\nBufferSize : " << device->getCurrentBufferSizeSamples() + "\n";
     }
@@ -227,13 +227,16 @@ public:
         addAndMakeVisible (recordingThumbnail);
 
        #ifndef JUCE_DEMO_RUNNER
-        RuntimePermissions::request (RuntimePermissions::recordAudio,
+        /*RuntimePermissions::request (RuntimePermissions::recordAudio,
                                      [this] (bool granted)
                                      {
+                                        cout << "IS GRANTED: " << granted << "\n";
                                          int numInputChannels = granted ? 2 : 0;
                                          audioDeviceManager.initialise (numInputChannels, 2, nullptr, true, {}, nullptr);
-                                     });
+                                     });*/
        #endif
+
+        cout << "\n\n\nCurr device: " << audioDeviceManager.getCurrentAudioDevice()->getName() << "\n";
 
         audioDeviceManager.addAudioCallback (&recorder);
 
