@@ -91,7 +91,6 @@ int main (int argc, char* argv[])
             {
                 cout << "device found:" << device << "\n";
                 if(device == ("sof-hda-dsp, ; Direct hardware device without any conversions (" + to_string(desiredDevice) + ")").c_str()) {
-                    cout << "have a go!\n";
                     
                     /*// Set up your desired audio device parameters
                     juce::AudioDeviceManager::AudioDeviceSetup setup;
@@ -110,7 +109,7 @@ int main (int argc, char* argv[])
                     
                     //const juce::AudioDeviceManager::AudioDeviceSetup* ref = &setup;
                     audioDeviceManager.initialise (128, 128, nullptr, true, devName, nullptr);
-                    
+                    break;
                     //auto res = audioDeviceManager.setAudioDeviceSetup (setup, true);
                     //cout << "Success!\n";
                     //cout << "Res: " << res << "\n";                    
