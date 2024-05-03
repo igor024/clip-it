@@ -98,7 +98,7 @@ int main (int argc, char* argv[])
 
     cout << "\nCurrent device: " << audioDeviceManager.getCurrentAudioDevice()->getName() << "\n";
    
-    cout << "Hotkeys:\nAlt+R: Clip it\nAlt+Shift+Q: Exit\n";
+    cout << "Hotkeys:\nAlt+Shift+R: Clip it\nAlt+Shift+Q: Exit\n";
     recorder.startRecording();
      if (!(dir = opendir("/dev/input"))) {
         return outerr(errno, "cannot enumerate devices");
