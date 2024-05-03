@@ -78,7 +78,10 @@ target_compile_definitions(ClipIt
 # we're linking our executable target to the `juce::juce_core` module. Inter-module dependencies are
 # resolved automatically. If you'd generated a binary data target above, you would need to link to
 # it here too. This is a standard CMake command.
+target_include_directories(ClipIt PRIVATE /usr/include/libevdev-1.0/libevdev)
 
+# Link against libevdev library
+target_link_libraries(ClipIt PRIVATE evdev)
 #ADD JUCE LIBRARIES HERE
 target_link_libraries(ClipIt
     PRIVATE
