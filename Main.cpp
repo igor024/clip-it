@@ -69,8 +69,10 @@ int main (int argc, char* argv[])
     cout << "\nCurrent device: " << audioDeviceManager.getCurrentAudioDevice()->getName() << "\n";
    
     cout << "Hotkeys:\nAlt+Z: Clip it\nQ: Exit\n";
+    recorder.startRecording();
     while(auto c = getchar()) {
         if(c == 'Q') {
+            recorder.stopRecording();
             cout << "done.\n";
             break;
         }
@@ -80,6 +82,7 @@ int main (int argc, char* argv[])
         if(c == 'S') {
             recorder.stopRecording();
             Clipper::clip();
+            recorder.startRecording();
         }
     }
 

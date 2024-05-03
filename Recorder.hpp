@@ -73,7 +73,6 @@ public:
     //==============================================================================
     void startRecording (const File& file)
     {
-        cout << "Start recording!!\n";
         stop();
 
         if (sampleRate > 0)
@@ -100,7 +99,6 @@ public:
                     // And now, swap over our active writer pointer so that the audio callback will start using it..
                     const ScopedLock sl (writerLock);
                     activeWriter = threadedWriter.get();
-                    cout << "done recording!!\n";
                 }
             }
         }
@@ -236,8 +234,6 @@ public:
                                      });*/
        #endif
 
-        cout << "\n\n\nCurr device: " << audioDeviceManager.getCurrentAudioDevice()->getName() << "\n";
-
         audioDeviceManager.addAudioCallback (&recorder);
 
     }
@@ -258,7 +254,6 @@ public:
 
     void startRecording()
     {
-        cout << "gogogo";
         if (! RuntimePermissions::isGranted (RuntimePermissions::writeExternalStorage))
         {
             SafePointer<Recorder> safeThis (this);
@@ -267,7 +262,7 @@ public:
                                          [safeThis] (bool granted) mutable
                                          {
                                              if (granted)
-                                                cout << "GRANTED\n";
+                                                cout << "Granted Permissions\n";
                                                  safeThis->startRecording();
                                          });
             return;
