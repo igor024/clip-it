@@ -65,58 +65,34 @@ int main (int argc, char* argv[])
 
     cout <<"\nstart program\n";
     juce::ignoreUnused (argc, argv);
-    
-    /*AudioFormatManager formatManager;
-    AudioThumbnailCache thumbnailCache  { 10 };
-    AudioThumbnail thumbnail            { 512, formatManager, thumbnailCache };
-    Recorder rec{thumbnail};
-    File lastRecording;
-    FileChooser chooser { "Output file...", File::getCurrentWorkingDirectory().getChildFile ("recording.wav"), "*.wav" };
-    */
+
     AudioDeviceManager audioDeviceManager;
 
-   auto& deviceTypes = audioDeviceManager.getAvailableDeviceTypes();
-   cout << "Enter desired device code" << endl;
-   int desiredDevice;
-        
-        
+    auto& deviceTypes = audioDeviceManager.getAvailableDeviceTypes();
+    cout << "Enter desired device code" << endl;
+    int desiredDevice;
 
-        cin >> desiredDevice;
+    cin >> desiredDevice;
 
-        for (auto type : deviceTypes)
+    for (auto type : deviceTypes)
+    {
+        auto deviceNames (type->getDeviceNames());
+        
+        for (auto device : deviceNames)
         {
-            auto deviceNames (type->getDeviceNames());
-            
-            for (auto device : deviceNames)
-            {
-                cout << "device found:" << device << "\n";
-                if(device == ("sof-hda-dsp, ; Direct hardware device without any conversions (" + to_string(desiredDevice) + ")").c_str()) {
-                    
-                    /*// Set up your desired audio device parameters
-                    juce::AudioDeviceManager::AudioDeviceSetup setup;
-                    setup.inputDeviceName = "sof-hda-dsp, ; Direct hardware device without any conversions (3)"; // Specify the name of your input device
-                    setup.useDefaultInputChannels = false;
-                    setup.inputChannels = 1; // Set the number of input channels you want to use
-                    //setup.inputChannels.set(0, true); // Enable the first input channel, adjust index if needed
+            cout << "device found:" << device << "\n";
+            if(device == ("sof-hda-dsp, ; Direct hardware device without any conversions (" + to_string(desiredDevice) + ")").c_str()) {
+                
+                auto setup = audioDeviceManager.getAudioDeviceSetup();
+                setup.inputDeviceName = device;
 
-                    // Set the audio device setup
-                    audioDeviceManager.setAudioDeviceSetup(setup, true);*/
-                    
-                    auto setup = audioDeviceManager.getAudioDeviceSetup();
-                    setup.inputDeviceName = device;
-
-                    const String& devName = "sof*"+to_string(desiredDevice)+"*";
-                    
-                    //const juce::AudioDeviceManager::AudioDeviceSetup* ref = &setup;
-                    audioDeviceManager.initialise (128, 128, nullptr, true, devName, nullptr);
-                    break;
-                    //auto res = audioDeviceManager.setAudioDeviceSetup (setup, true);
-                    //cout << "Success!\n";
-                    //cout << "Res: " << res << "\n";                    
-
-                }
+                const String& devName = "sof*"+to_string(desiredDevice)+"*";
+                
+                audioDeviceManager.initialise (128, 128, nullptr, true, devName, nullptr);
+                break;                   
             }
         }
+    }
 
     Recorder recorder {audioDeviceManager};
 

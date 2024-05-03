@@ -154,7 +154,7 @@ public:
             nextSampleNum += numSamples;
         }
 
-        // We need to clear the output buffers, in case they're full of junk..
+        // set all output channels to zero
         for (int i = 0; i < numOutputChannels; ++i)
             if (outputChannelData[i] != nullptr)
                 FloatVectorOperations::clear (outputChannelData[i], numSamples);
@@ -224,16 +224,6 @@ public:
 
         addAndMakeVisible (recordingThumbnail);
 
-       #ifndef JUCE_DEMO_RUNNER
-        /*RuntimePermissions::request (RuntimePermissions::recordAudio,
-                                     [this] (bool granted)
-                                     {
-                                        cout << "IS GRANTED: " << granted << "\n";
-                                         int numInputChannels = granted ? 2 : 0;
-                                         audioDeviceManager.initialise (numInputChannels, 2, nullptr, true, {}, nullptr);
-                                     });*/
-       #endif
-
         audioDeviceManager.addAudioCallback (&recorder);
 
     }
@@ -283,7 +273,7 @@ public:
     {
         recorder.stop();
 
-        //choose file location doesnt work yet
+        //choose file location
 
         /*chooser.launchAsync (  FileBrowserComponent::saveMode
                              | FileBrowserComponent::canSelectFiles
@@ -306,7 +296,7 @@ private:
     RecordingThumbnail recordingThumbnail;
     AudioRecorder recorder { recordingThumbnail.getAudioThumbnail() };
 
-    FileChooser chooser { "Output file...", File::getCurrentWorkingDirectory().getChildFile ("recording.wav"), "*.wav" };
+    //FileChooser chooser { "Output file...", File::getCurrentWorkingDirectory().getChildFile ("recording.wav"), "*.wav" };
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (Recorder)
 };
