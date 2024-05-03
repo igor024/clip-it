@@ -82,7 +82,7 @@ target_compile_definitions(ClipIt
 #ADD JUCE LIBRARIES HERE
 target_link_libraries(ClipIt
     PRIVATE
-        # ConsoleAppData            # If you'd created a binary data target, you'd link to it here
+        #ConsoleAppData            # If you'd created a binary data target, you'd link to it here
         juce::juce_core
         juce::juce_dsp #digital signal processing
         juce::juce_audio_utils #for recording stuff

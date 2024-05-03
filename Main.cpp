@@ -1,7 +1,14 @@
 #include <juce_core/juce_core.h>
-#include <iostream>
-#include "AudioRecordingDemo.h"
+#include "Recorder.h"
 #include <JuceHeader.h>
+#include "Clipper.h"
+
+#include <iostream>
+#include <stdexcept>
+#include <stdio.h>
+#include <string>
+#include <cstdio>
+
 
 using namespace std;
 int main (int argc, char* argv[])
@@ -50,21 +57,16 @@ int main (int argc, char* argv[])
                     audioDeviceManager.initialise (128, 128, nullptr, true, devName, nullptr);
                     
                     //auto res = audioDeviceManager.setAudioDeviceSetup (setup, true);
-                    cout << "Success!\n";
-                    //cout << "Res: " << res << "\n";
-                    cout << "Curr device: " << audioDeviceManager.getCurrentAudioDevice()->getName() << "\n";
-                    
-
+                    //cout << "Success!\n";
+                    //cout << "Res: " << res << "\n";                    
 
                 }
             }
         }
 
-    cout << "\nCurr device2: " << audioDeviceManager.getCurrentAudioDevice()->getName() << "\n";
+    Recorder recorder {audioDeviceManager};
 
-    AudioRecordingDemo recorder {audioDeviceManager};
-
-    cout << "\nCurr device3: " << audioDeviceManager.getCurrentAudioDevice()->getName() << "\n";
+    cout << "\nCurrent device: " << audioDeviceManager.getCurrentAudioDevice()->getName() << "\n";
    
     cout << "Hotkeys:\nAlt+Z: Clip it\nQ: Exit\n";
     while(auto c = getchar()) {
@@ -77,6 +79,7 @@ int main (int argc, char* argv[])
         }
         if(c == 'S') {
             recorder.stopRecording();
+            Clipper::clip();
         }
     }
 
