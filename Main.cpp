@@ -76,7 +76,13 @@ int main (int argc, char* argv[])
     AudioDeviceManager audioDeviceManager;
 
    auto& deviceTypes = audioDeviceManager.getAvailableDeviceTypes();
+   cout << "Enter desired device code" << endl;
+   int desiredDevice;
         
+        
+
+        cin >> desiredDevice;
+
         for (auto type : deviceTypes)
         {
             auto deviceNames (type->getDeviceNames());
@@ -84,7 +90,7 @@ int main (int argc, char* argv[])
             for (auto device : deviceNames)
             {
                 cout << "device found:" << device << "\n";
-                if(device == "sof-hda-dsp, ; Direct hardware device without any conversions (3)") {
+                if(device == ("sof-hda-dsp, ; Direct hardware device without any conversions (" + to_string(desiredDevice) + ")").c_str()) {
                     cout << "have a go!\n";
                     
                     /*// Set up your desired audio device parameters
@@ -100,7 +106,7 @@ int main (int argc, char* argv[])
                     auto setup = audioDeviceManager.getAudioDeviceSetup();
                     setup.inputDeviceName = device;
 
-                    const String& devName = "sof*3*";
+                    const String& devName = "sof*"+to_string(desiredDevice)+"*";
                     
                     //const juce::AudioDeviceManager::AudioDeviceSetup* ref = &setup;
                     audioDeviceManager.initialise (128, 128, nullptr, true, devName, nullptr);
