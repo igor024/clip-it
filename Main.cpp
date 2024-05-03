@@ -1,7 +1,7 @@
 #include <juce_core/juce_core.h>
-#include "Recorder.h"
+#include "Recorder.hpp"
 #include <JuceHeader.h>
-#include "Clipper.h"
+#include "Clipper.hpp"
 
 #include <iostream>
 #include <stdexcept>
