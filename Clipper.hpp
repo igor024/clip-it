@@ -8,7 +8,6 @@ using namespace std;
 class Clipper {
    public:
       static void clip() {
-         string result = "";
          string c = "./clip.sh";
 
          // run command
@@ -17,6 +16,19 @@ class Clipper {
             return; //failed
          }
 
+         /* to log output 
+         string result = "";
+         char buffer[128];
+         while (!feof(pipe)) {
+
+            // use buffer to read and add to result
+            if (fgets(buffer, 128, pipe) != NULL)
+               result += buffer;
+         } 
+
+         cout << result;
+         */
+        
          pclose(pipe);
       }
 };
